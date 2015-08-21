@@ -7,10 +7,12 @@ HashTable.prototype.insert = function(k, v){
   var i = getIndexBelowMaxForKey(k, this._limit);
   if (!this._storage.get(i)) {
     this._storage.set(i,[]);
-  }  
-  for (var j=0,val=this._storage.get(i);j<val.length;j++) {
-    if (val[j][0]===k) {
-      val[j][1] = v;
+  }
+  var tuples = this._storage.get(i);
+  for (var j=0; j<tuples.length; j++) {
+    if (tuples[j][0]===k) {
+      tuples[j][1] = v;
+      return;
     }
   }
   this._storage.get(i).push([k,v]);
@@ -29,10 +31,10 @@ HashTable.prototype.retrieve = function(k){
 
 HashTable.prototype.remove = function(k){
   var i = getIndexBelowMaxForKey(k, this._limit);
-  for (var j=0,val=this._storage.get(i);j<val.length;j++) {
-    if (val[j][0]===k) {
-      val[j][0] = null;
-      val[j][1] = null;
+  var tuples = this._storage.get(i);
+  for (var j=0; j<tuples.length;j++) {
+    if (tuples[j][0]===k) {
+      tuples.splice(j, 1);
     }
   }
 };
