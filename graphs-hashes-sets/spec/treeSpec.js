@@ -4,6 +4,33 @@ describe('tree', function() {
   beforeEach(function() {
     tree = Tree();
   });
+  
+  it('should execute callback on every value for traverse', function() {
+    tree.value = 4;
+    tree.addChild(1).addChild(2).addChild(3);
+    tree.addChild(4);
+    tree.addChild(5).addChild(6);
+    var test = [];
+    tree.traverse(function(val) { test.push(val); });
+    var desiredArray = [4,1,2,3,4,5,6];
+    expect(test).to.eql(desiredArray);
+  });
+
+  it('should have a parent property', function() {
+    expect(tree.parent).to.equal(null);
+    tree.addChild(3);
+    expect(tree.children[0].parent).to.equal(tree);
+  });
+
+  it('should remove parent from both directions when removeFromParent is called', function() {
+    var savedChild = tree.addChild(1).addChild(3);
+    var removedParent = savedChild.removeFromParent();
+    expect(removedParent.value).to.equal(1);
+    expect(tree.contains(3)).to.equal(false);
+    expect(tree.contains(1)).to.equal(true);
+    expect(tree.children[0].children[0]).to.equal(undefined);
+    expect(removedParent).to.equal(tree.children[0]);
+  });
 
   it('should have methods named "addChild" and "contains", and a property named "value"', function() {
     expect(tree.addChild).to.be.a("function");
