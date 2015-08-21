@@ -3,6 +3,7 @@ var BinarySearchTree = function(value) {
   obj.value = value;
   obj.left = null;
   obj.right = null;
+
   obj.insert = function(input) {
     if (input === obj.value) return 'ERROR';
     var side = input < obj.value ? 'left' : 'right';
@@ -28,11 +29,14 @@ var BinarySearchTree = function(value) {
     if (obj.left) obj.left.depthFirstLog(func);
     if (obj.right) obj.right.depthFirstLog(func);
   };
-
+  
   return obj;
 };
 
 
 /*
  * Complexity: What is the time complexity of the above functions?
+insert: O(log(n))
+contains: O(log(n)) 
+depthFirstLog: O(n)
  */
