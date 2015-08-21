@@ -30,7 +30,7 @@ Graph.prototype.removeNode = function(node){
 // ------------------------
 // Returns a boolean indicating whether two specified nodes are connected.  Pass in the values contained in each of the two nodes.
 Graph.prototype.hasEdge = function(fromNode, toNode){
-  if ( this[fromNode].edges.hasOwnProperty(toNode) && this[toNode].edges.hasOwnProperty(fromNode) ) {
+  if ( this[fromNode].edges[toNode] ) {
     return true;
   }
   return false;
@@ -46,17 +46,29 @@ Graph.prototype.addEdge = function(fromNode, toNode){
 // ------------------------
 // Remove an edge between any two specified (by value) nodes.
 Graph.prototype.removeEdge = function(fromNode, toNode){
-  delete this[fromNode].edges[toNode];
-  delete this[toNode].edges[fromNode];
+  this[fromNode].edges[toNode] = false;
+  this[toNode].edges[fromNode] = false;
 };
 
 // ------------------------
 // Pass in a callback which will be executed on each node of the graph.
 Graph.prototype.forEachNode = function(cb){
+  for (var node in this) {
+    if (this.hasOwnProperty(node)) {
+      cb(node);
+    }
+  }
 };
 
 /*
  * Complexity: What is the time complexity of the above functions?
+ addNode:  O(1)
+ contains: O(1)
+ removeNode: O(1)
+ hasEdge: O(1)
+ addEdge: O(1)
+ removeEdge: O(1)
+ forEachNode: O(n)
  */
 
 
