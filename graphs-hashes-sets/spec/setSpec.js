@@ -14,8 +14,18 @@ describe('set', function() {
   it('should add values to a set', function(){
     set.add("Susan Sarandon");
     set.add("Danny Glover");
+    set.add(1);
+    set.add(2);
+    set.add([1,2,3]);
+    set.add({});
+    set.add(false);
     expect(set.contains('Danny Glover')).to.equal(true);
     expect(set.contains('Susan Sarandon')).to.equal(true);
+    expect(set.contains(1)).to.equal(true);
+    expect(set.contains(2)).to.equal(true);
+    expect(set.contains([1,2,3])).to.equal(true);
+    expect(set.contains({})).to.equal(true);
+    expect(set.contains(false)).to.equal(true);
   });
 
   it('should remove values from a set', function(){
