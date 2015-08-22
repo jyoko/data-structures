@@ -30,6 +30,32 @@ var BinarySearchTree = function(value) {
     if (obj.right) obj.right.depthFirstLog(func);
   };
   
+  obj.breadthFirstLog = function(func, level) {
+    var newLevel = [];
+    //level = ||[obj]
+    if (!level) {
+     func(obj.value);
+     newLevel.push(obj.left, obj.right);
+    }
+ //   if (!level[0]) breadthFirstLog(obj.value,[obj.left,obj.right]);
+    
+
+    for (var i = 0; i < level.length; i++) {
+      func(level[i].value);
+      newLevel.push(level[i].left);
+      newLevel.push(level[i].right);
+    }
+    obj.breadthFirstLog(func, newLevel);
+    /*
+    func(obj.left.value);
+    func(obj.right.value);
+
+    func(obj.left.left.value);
+    func(obj.left.right.value);
+    func(obj.right.left.value);
+    func(obj.right.right.value);
+*/
+  }
   return obj;
 };
 
