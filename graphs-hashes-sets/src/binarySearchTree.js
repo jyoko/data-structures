@@ -12,6 +12,7 @@ var BinarySearchTree = function(value) {
     } else {
       obj[side] = BinarySearchTree(input);
     }
+    obj.balance();
   };
 
   obj.contains = function(input) {     
@@ -29,19 +30,45 @@ var BinarySearchTree = function(value) {
     if (obj.left) obj.left.depthFirstLog(func);
     if (obj.right) obj.right.depthFirstLog(func);
   };
+
+
   
-  obj.breadthFirstLog = function(func, level) {
+  obj.traverseInOrder = function(node, func) {
+    if (node === null) return;
+    obj.traverseInOrder(node.left, func); 
+    func(node.value);
+    obj.traverseInOrder(node.right, func);
+  };
+  
+  
+
+  obj.breadthFirstLog = function(func) {
     // Recursion:
-    var newLevel = [];
-    var level = level || [obj];
-
-    for (var i = 0; i < level.length; i++) {
-      func(level[i].value);
-      if (level[i].left) newLevel.push(level[i].left);
-      if (level[i].right) newLevel.push(level[i].right);
+    var min;
+    var count = 0;
+    if (!func) {
+      func = function() {};
     }
+    var countLevels = function(level) {
+      var newLevel = [];
+      var level = level || [obj];
+      count++;
+      for (var i = 0; i < level.length; i++) {
+        func(level[i].value);
 
-    if(newLevel.length>0) obj.breadthFirstLog(func, newLevel);
+        if (level[i].left) newLevel.push(level[i].left);
+        if (level[i].right) newLevel.push(level[i].right);
+        if (level[i].left === null && level[i].right === null && min === undefined) {
+          min = count;
+        }
+      }
+
+      if(newLevel.length>0) countLevels(newLevel);
+
+    };  
+    countLevels();
+ //   console.log(min);
+   // console.log(count);
     /*  Queue:
         var queue = new Queue;
         queue.enqueue(obj);
@@ -52,7 +79,32 @@ var BinarySearchTree = function(value) {
           queue.enqueue(current.right);
         }
     */
-  }
+    // force rebalance only after 3 levels deep
+    return (count-1 < 4) ? 0 : Math.floor(count/min);
+  };
+
+  obj.balance = function(orderedNodes) {
+
+    if (!orderedNodes) {
+      if (obj.breadthFirstLog() < 2) return obj;
+      orderedNodes = [];
+      obj.traverseInOrder(obj,function(val) { orderedNodes.push(val); });
+    }
+    
+    var middle = Math.floor(orderedNodes.length / 2);
+    obj = BinarySearchTree(orderedNodes[middle]);
+    if (middle !== 1) {
+      var l = orderedNodes.slice(0,middle);
+      var r = orderedNodes.slice(middle + 1, orderedNodes.length);
+      obj.left = obj.balance(l);
+      obj.right = obj.balance(r);
+    } else {
+      obj.left = (orderedNodes[0])?BinarySearchTree(orderedNodes[0]):null;
+      obj.right = (orderedNodes[2])?BinarySearchTree(orderedNodes[2]):null;
+    }
+    console.log(obj);
+    return obj;
+  };
 
   return obj;
 };

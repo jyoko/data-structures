@@ -50,4 +50,35 @@ describe('binarySearchTree', function() {
     binarySearchTree.breadthFirstLog(func);
     expect(array).to.eql([5,2,6,1,3,4]);
   });
+  it('should execute a callback on every value in a tree using "traverseInOrder" (sorted)', function(){
+    var array = [];
+    var func = function(value){ array.push(value); };
+    binarySearchTree.insert(2);
+    binarySearchTree.insert(1);
+    binarySearchTree.insert(3);
+    binarySearchTree.insert(4);
+    binarySearchTree.insert(6);
+    binarySearchTree.traverseInOrder(binarySearchTree, func);
+    expect(array).to.eql([1,2,3,4,5,6]);
+  });
+  it('should automatically rebalance trees w/ depth over 4',function() {
+    var array = [];
+    var func = function(value){ array.push(value); };
+    binarySearchTree.insert(2);
+    binarySearchTree.insert(1);
+    binarySearchTree.insert(3);
+    binarySearchTree.insert(4);
+    binarySearchTree.depthFirstLog(func);
+    expect(array).to.eql([5,2,1,3,4]);
+    binarySearchTree.insert(6);
+    binarySearchTree.insert(7);
+    binarySearchTree.insert(8);
+    binarySearchTree.insert(9);
+    array = [];
+    binarySearchTree.depthFirstLog(func);
+    expect(array).to.eql([5,2,1,3,4,6,7,8,9]);
+    
+   // console.log(binarySearchTree.balance());
+  });
+ 
 });
