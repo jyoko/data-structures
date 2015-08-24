@@ -61,7 +61,7 @@ describe('binarySearchTree', function() {
     binarySearchTree.traverseInOrder(binarySearchTree, func);
     expect(array).to.eql([1,2,3,4,5,6]);
   });
-  it('should automatically rebalance trees w/ depth over 4',function() {
+  it('should automatically rebalance trees after 3 layers',function() {
     var array = [];
     var func = function(value){ array.push(value); };
     binarySearchTree.insert(2);
@@ -77,8 +77,6 @@ describe('binarySearchTree', function() {
     array = [];
     binarySearchTree.depthFirstLog(func);
     expect(array).to.eql([5,2,1,3,4,6,7,8,9]);
-    
-   // console.log(binarySearchTree.balance());
   });
  
 });
