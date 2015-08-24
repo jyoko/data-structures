@@ -1,0 +1,52 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Mocha Tests</title>
+    <link rel="stylesheet" href="../lib/mocha/mocha.css" />
+    <script src="../lib/jquery/jquery.js"></script>
+    <script src="../lib/mocha/mocha.js"></script>
+    <script src="../lib/chai/chai.js"></script>
+    <script src="../lib/underscore/underscore.js"></script>
+    <script>
+      mocha.setup('bdd');
+      window.expect = chai.expect;
+
+      if (!window.File || !window.FileReader) {
+        console.error('Your browser does not support File APIs to read dictionary.txt');
+      }
+
+      // accessable as window.dict{}
+      window.dict = {};
+      function loadDict(f) {
+        var dictFile = f[0];
+        var reader = new FileReader();
+        reader.onload = function() {
+          var dictArray = reader.result.toLowerCase().split("\n");
+          for (var i=0;i<dictArray.length;i++) {
+            window.dict[dictArray[i]] = null;
+          }
+          window.mochaPhantomJS ? mochaPhantomJS.run() : mocha.run();
+        };
+        reader.readAsText(dictFile);
+      }
+/*
+      $(function() {
+        window.mochaPhantomJS ? mochaPhantomJS.run() : mocha.run();
+      })
+*/
+    </script>
+
+    <!-- source files -->
+    <script type="text/javascript" src="prefixTree.js"></script>
+    <!-- wrap dict as JSON?? -->
+    <p>Add ./dictionary.txt to run tests: 
+    <input type="file" id="dict" onchange="loadDict(this.files)"></p> 
+
+    <!-- spec files -->
+    <script type="text/javascript" src="prefixTreeSpec.js"></script>
+
+  </head>
+  <body>
+    <div id="mocha"></div>
+  </body>
+</html>
